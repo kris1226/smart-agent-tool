@@ -25,9 +25,12 @@ build/Release
 # Dependency directory
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
 node_modules
+<<<<<<< HEAD
 .DS_Store
 *.log
 dist
 lib
 coverage
 _book
+=======
+>>>>>>> 767e1e5f00d4e04a9451696d3ee1af21e7347031

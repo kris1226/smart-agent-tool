@@ -25,27 +25,24 @@ export function invalidateClient(reddit) {
 
 function requestClients(clients) {
   return {
-    type: REQUEST_CLIENTS,
-    clients
+    type: REQUEST_CLIENTS
   };
 }
 
-function receiveClients(clients, json) {
-  debugger;
+function receiveClients(json) {
   return {
     type: RECEIVE_CLIENTS,
-    clients: json.data.children.map(child => child.data),
+    clients: json.map(user => user.login),
     receivedAt: Date.now()
   };
 }
 
-export function fetchClients(clients) {
-  debugger;
+export function fetchClients() {
   return dispatch => {
-    dispatch(requestClients(clients));
-    return fetch(`localhost:9000/api/clients`)
+    dispatch(requestClients());
+    return fetch(`https://api.github.com/users`)
       .then(response => response.json())
-      .then(json => dispatch(receiveClients(clients, json)));
+      .then(json => dispatch(receiveClients(json)));
   }
 }
 
@@ -62,7 +59,9 @@ function shouldFetchClients(state) {
 
 export function fetchClientsIfNeeded() {
   debugger;
-  return (dispatch) => {
-      return dispatch(fetchClients());
+  return (dispatch, getState) => {
+      if(shouldFetchClients(getState())){
+        return dispatch(fetchClients());
+      }      
   }
 }

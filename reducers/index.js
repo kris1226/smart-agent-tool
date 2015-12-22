@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import {
   SELECT_CLIENT, INVALIDATE_CLIENT,
-  REQUEST_CLIENTS
+  REQUEST_CLIENTS, RECEIVE_CLIENTS
 } from '../actions';
 
 function selectedClient(state = 'client', action) {
@@ -26,6 +26,11 @@ function clients(state = {
     case REQUEST_CLIENTS:
       return Object.assign({}, state, {
         isfetching: false,
+        didInvalidate: false
+      });
+    case RECEIVE_CLIENTS:
+      return Object.assign({}, state, {
+        isfetching: false,
         didInvalidate: false,
         items: action.clients,
         lastUpdated: action.receivedAt
@@ -36,8 +41,8 @@ function clients(state = {
 }
 
 const rootReducer = combineReducers({
-  clients,
-  selectedClient
+  selectedClient,
+  clients
 });
 
 export default rootReducer;

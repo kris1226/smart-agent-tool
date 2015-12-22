@@ -1,25 +1,25 @@
 import React, { Component, PropTypes } from 'react';
-import { selectClient, invalidateClient, fetchClientsIfNeeded, fetchClients } from '../actions';
+import { selectClient, invalidateClient, fetchClientsIfNeeded } from '../actions';
 import { connect } from 'react-redux';
 import Picker from '../components/Picker';
 
 class App extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.handleChange = this.handleChange.bind(this);
     this.handleRefreshClick = this.handleRefreshClick.bind(this)
   }
 
   componentDidMount() {
+    const { dispatch, selectedClient } = this.props;
     debugger;
-    const { dispatch, selectedClient, clients } = this.props;
-    dispatch(fetchClients(clients));
+    dispatch(fetchClientsIfNeeded());
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.selectedClient !== this.props.selectedClient) {
       const { dispatch, selectedClient, clients } = nextProps;
-      dispatch(fetchClients(clients));
+      dispatch(fetchClientsIfNeeded());
     }
    }
 
@@ -28,24 +28,25 @@ class App extends Component {
    }
 
    handleRefreshClick(e) {
-     e.preventDefault()
-
+     e.preventDefault();
      const { dispatch, selectedClient } = this.props;
      dispatch(invalidateClient(selectedClient));
+     dispatch(fetchClientsIfNeeded());
    }
 
   render() {
+    debugger;
     const { selectedClient, clients, isFetching, lastUpdated } = this.props;
+    console.log(clients);
     return(
       <div>
         <Picker value={selectedClient}
                 onChange={this.handleChange}
-                options={clients}/>
+                options={clients}
+        />
       </div>
     );
-
   }
-
 }
 
 App.propTypes = {

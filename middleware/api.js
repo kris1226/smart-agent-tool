@@ -28,8 +28,7 @@ const userSchema = new Schema('users', {
 });
 
 export const Schemas = {
-  USER: userSchema,
-  USER_ARRAY: array(userSchema)
+  USER: userSchema
 }
 
 export const CALL_API = Symbol('Call API');
